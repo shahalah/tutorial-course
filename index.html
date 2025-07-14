@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tutorial Series</title>
+  <style>
+    video {
+      width: 100%;
+      max-width: 720px;
+      display: none;
+      margin-bottom: 20px;
+    }
+    .active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Watch in Order</h1>
+
+  <video id="v1" class="active" controls>
+    <source src="https://drive.google.com/uc?export=download&id=YOUR_VIDEO_ID_1" type="video/mp4">
+  </video>
+
+  <video id="v2" controls>
+    <source src="https://drive.google.com/uc?export=download&id=YOUR_VIDEO_ID_2" type="video/mp4">
+  </video>
+
+  <video id="v3" controls>
+    <source src="https://drive.google.com/uc?export=download&id=YOUR_VIDEO_ID_3" type="video/mp4">
+  </video>
+
+  <!-- Add more videos (v4 to v7) here -->
+
+  <script>
+    const videos = [
+      document.getElementById("v1"),
+      document.getElementById("v2"),
+      document.getElementById("v3"),
+      // Add all 7 video elements here
+    ];
+
+    videos.forEach((video, index) => {
+      video.addEventListener("ended", () => {
+        if (videos[index + 1]) {
+          videos[index].classList.remove("active");
+          videos[index + 1].classList.add("active");
+          videos[index + 1].play();
+        }
+      });
+
+      video.addEventListener("play", () => {
+        video.addEventListener("seeking", () => {
+          if (video.currentTime > (video.lastTime || 0)) {
+            video.currentTime = video.lastTime || 0;
+          }
+        });
+        setInterval(() => video.lastTime = video.currentTime, 1000);
+      });
+    });
+  </script>
+</body>
+</html>
